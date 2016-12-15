@@ -11,27 +11,37 @@ import android.content.Intent;
 
 public class SplashActivity extends Activity {
 
+    private final int SPLASH_DISPLAY_LENGTH = 1 * 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+    }
 
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility( View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN );
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        /* new Handler().postDelayed( new Runnable(){
+        // this.delayedSplash(SPLASH_DISPLAY_LENGTH);
+        this.finishSplash();
+    }
 
-            @Override
-            public void run() {
-                Intent mainIntent = new Intent( SplashScreen.this, PageSplashBase.class );
-                SplashScreen.this.startActivity( mainIntent );
-                SplashScreen.this.finish();
-            }
-
-        }, SPLASH_DISPLAY_LENGTH ); */
-
+    public void finishSplash() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
+
+    protected void delayedSplash(final int delay) {
+        new Handler().postDelayed(new Runnable(){
+
+            @Override
+            public void run() {
+                SplashActivity.this.finishSplash();
+            }
+
+        }, delay);
+    }
+
 }
